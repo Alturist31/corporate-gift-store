@@ -4,6 +4,7 @@ export default defineConfig({
   branch: "main",
   clientId: null, // Null for local development mode
   token: null,    // Null for local development mode
+ isCloud: false, 
   build: {
     outputFolder: "admin",
     publicFolder: "public",
