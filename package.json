@@ -6,11 +6,10 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "tinacms dev --port 9001 -c \"astro dev\"",
-    "build": "tinacms build && astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
+  "dev": "tinacms dev --port 9001 -c \"astro dev\"",
+  "start": "astro dev",
+  "build": "astro build"
+},
   "dependencies": {
     "@astrojs/node": "^11.1.4",
     "@astrojs/react": "^6.0.4",
