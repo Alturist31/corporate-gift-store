@@ -1,12 +1,15 @@
 import { defineConfig } from "tinacms";
 
-// 💡 THE ULTIMATE BYPASS: Tells the internal engine to act like a local hard drive even on Vercel
-const isLocal = true;
+// 💡 AUTOMATED CHECK: Uses environment keys when live on Vercel, falls back to local mode on your machine
+const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig({
   branch: "main",
-  clientId: null, 
-  token: null,    
+  
+  // Bridge keys dynamically
+  clientId: process.env.TINA_CLIENT_ID || null,
+  token: process.env.TINA_TOKEN || null,
+
   build: {
     outputFolder: "admin",
     publicFolder: "public",
@@ -17,15 +20,17 @@ export default defineConfig({
       publicFolder: "public",
     },
   },
-  // Force local production flags
-  isCloud: false,
-  local: true, 
+  
+  // Safely toggles server rules based on where the app is running
+  isCloud: isProduction,
+  local: !isProduction,
+
   schema: {
     collections: [
       {
         name: "product",
         label: "Corporate Products",
-        path: "src/content/products", 
+        path: "src/content/products",
         format: "md",
         fields: [
           { type: "string", name: "title", label: "Product Name", isTitle: true, required: true },
