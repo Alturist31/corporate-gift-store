@@ -1,0 +1,26 @@
+local_backend: true
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "products"
+    label: "Corporate Products"
+    folder: "src/content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product Name", name: "title", widget: "string" }
+      - { 
+          label: "Category", 
+          name: "category", 
+          widget: "select", 
+          options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor"] 
+        }
+      - { label: "Display Image", name: "image", widget: "image" }
+      - { label: "Base Price (₹)", name: "price", widget: "number", value_type: "int" }
+      - { label: "Minimum Order Quantity (MOQ)", name: "moq", widget: "number", value_type: "int" }
+      - { label: "Product Description", name: "body", widget: "markdown" }
