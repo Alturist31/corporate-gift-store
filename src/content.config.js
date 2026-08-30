@@ -15,6 +15,8 @@ export const collections = {
       image: z.string().default('https://unsplash.com'),
       price: z.number().default(0),
       moq: z.number().default(1),
+      // 💡 NEW: Accept color choices array in frontend mapping
+      colors: z.array(z.string()).default([]),
     }).passthrough(),
   }),
 };

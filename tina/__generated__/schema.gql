@@ -94,6 +94,7 @@ type Product implements Node & Document {
   price: Float
   moq: Float
   body: JSON
+  colors: [String]
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -136,6 +137,7 @@ input ProductFilter {
   price: NumberFilter
   moq: NumberFilter
   body: RichTextFilter
+  colors: StringFilter
 }
 
 type ProductConnectionEdges {
@@ -175,6 +177,7 @@ input ProductMutation {
   price: Float
   moq: Float
   body: JSON
+  colors: [String]
 }
 
 schema {

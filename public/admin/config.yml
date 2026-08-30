@@ -18,7 +18,7 @@ collections:
           label: "Category", 
           name: "category", 
           widget: "select", 
-          options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor"] 
+          options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor","Gift Sets"] 
         }
       - { label: "Display Image", name: "image", widget: "image" }
       - { label: "Base Price (₹)", name: "price", widget: "number", value_type: "int" }

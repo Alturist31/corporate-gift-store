@@ -63,6 +63,30 @@ const uniqueCategories = ["All", ...new Set(localProducts.map(p => p.data.catego
                   <p><strong>Base Price:</strong> ₹{product.data.price}</p>
                   <p><strong>Min. Order (MOQ):</strong> {product.data.moq} units</p>
                 </div>
+                {/* 💡 NEW: Visual Color Swatch Circles Array */}
+                {product.data.colors && product.data.colors.length > 0 && (
+                  <div style="display: flex; gap: 6px; margin: 10px 0; align-items: center;">
+                    <span style="font-size: 13px; color: #4b5563; font-weight: 500;">Colors:</span>
+                    {product.data.colors.map((color) => {
+                      // Normalize special color names for standard browser rendering
+                      const hexColor = color === 'tan' ? '#d2b48c' : color;
+                      return (
+                        <span 
+                          title={color}
+                          style={`
+                            display: inline-block; 
+                            width: 16px; 
+                            height: 16px; 
+                            border-radius: 50%; 
+                            background-color: ${hexColor}; 
+                            border: 1px solid #d1d5db;
+                            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+                          `}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               
               <!-- 💡 CRUCIAL: We pass the live data variables and item names into your React component -->

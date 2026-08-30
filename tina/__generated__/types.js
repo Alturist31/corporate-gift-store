@@ -14,6 +14,7 @@ export const ProductPartsFragmentDoc = gql`
   price
   moq
   body
+  colors
 }
     `;
 export const ProductDocument = gql`

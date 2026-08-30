@@ -3,8 +3,7 @@ import { defineConfig } from "tinacms";
 var isProduction = false;
 var config_default = defineConfig({
   branch: "main",
-  // Bridge keys dynamically
-  clientId: process.env.TINA_CLIENT_ID || null,
+  clientId: process.env.PUBLIC_TINA_CLIENT_ID || null,
   token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
@@ -16,7 +15,6 @@ var config_default = defineConfig({
       publicFolder: "public"
     }
   },
-  // Safely toggles server rules based on where the app is running
   isCloud: isProduction,
   local: !isProduction,
   schema: {
@@ -37,7 +35,23 @@ var config_default = defineConfig({
           { type: "image", name: "image", label: "Display Image" },
           { type: "number", name: "price", label: "Base Price (\u20B9)" },
           { type: "number", name: "moq", label: "Minimum Order Quantity (MOQ)" },
-          { type: "rich-text", name: "body", label: "Product Description", isBody: true }
+          { type: "rich-text", name: "body", label: "Product Description", isBody: true },
+          // 💡 COLOR CHECKLIST: Declared only once at the bottom
+          {
+            type: "string",
+            name: "colors",
+            label: "Available Colors",
+            list: true,
+            options: [
+              { value: "black", label: "Black" },
+              { value: "blue", label: "Blue" },
+              { value: "brown", label: "Brown" },
+              { value: "tan", label: "Tan" },
+              { value: "grey", label: "Grey" },
+              { value: "red", label: "Red" },
+              { value: "white", label: "White" }
+            ]
+          }
         ]
       }
     ]
