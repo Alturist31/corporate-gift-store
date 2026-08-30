@@ -1,0 +1,41 @@
+---
+// src/components/Header.astro
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png'; // Ensure your PNG is in src/assets/
+---
+
+<header class="site-header">
+  <div class="header-container">
+    <a href="/" class="logo-link">
+      <Image 
+        src={logo} 
+        alt="Client Company Logo" 
+        width={180} /* Set your desired display width */
+        height={60}  /* Set your desired display height */
+        loading="eager" /* Ensures the logo loads immediately above the fold */
+      />
+    </a>
+    <nav>
+      <!-- Your navigation links go here -->
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Basic styling to structure your header */
+  .site-header {
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .logo-link {
+    display: inline-block;
+  }
+</style>

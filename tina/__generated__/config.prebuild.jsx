@@ -1,9 +1,11 @@
 // tina/config.js
 import { defineConfig } from "tinacms";
+var isProduction = false;
 var config_default = defineConfig({
   branch: "main",
-  clientId: null,
-  token: null,
+  // Bridge keys dynamically
+  clientId: process.env.TINA_CLIENT_ID || null,
+  token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
     publicFolder: "public"
@@ -14,9 +16,9 @@ var config_default = defineConfig({
       publicFolder: "public"
     }
   },
-  // Force local production flags
-  isCloud: false,
-  local: true,
+  // Safely toggles server rules based on where the app is running
+  isCloud: isProduction,
+  local: !isProduction,
   schema: {
     collections: [
       {
