@@ -1,11 +1,20 @@
 import { defineConfig } from "tinacms";
 
-const isProduction = process.env.NODE_ENV === "production";
+const isLocal = process.env.NODE_ENV === "development";
 
 export default defineConfig({
-  branch: "main",
-  clientId: process.env.TINA_CLIENT_ID || null,
-  token: process.env.TINA_TOKEN || null,
+  // Uses dummy tokens for prod build, but completely clears them for local dev
+  branch: isLocal ? undefined : (process.env.NEXT_PUBLIC_TINA_BRANCH || "main"),
+  clientId: isLocal ? undefined : process.env.TINA_CLIENT_ID || null,
+  token: isLocal ? undefined : process.env.TINA_TOKEN || null,
+
+
+//const isProduction = process.env.NODE_ENV === "production";
+
+//export default defineConfig({
+  //branch: "main",
+  //clientId: process.env.TINA_CLIENT_ID || null,
+  //token: process.env.TINA_TOKEN || null,
 
   build: {
     outputFolder: "admin",
@@ -18,8 +27,8 @@ export default defineConfig({
     },
   },
   
-  isCloud: isProduction,
-  local: !isProduction,
+  //isCloud: isProduction,
+  //local: !isProduction,
 
   schema: {
     collections: [
@@ -42,7 +51,7 @@ export default defineConfig({
           { type: "rich-text", name: "body", label: "Product Description", isBody: true },
           // 💡 COLOR CHECKLIST: Declared only once at the bottom
           {
-            type: "string",
+             type: "string",
             name: "colors",
             label: "Available Colors",
             list: true,
@@ -58,33 +67,50 @@ export default defineConfig({
                       {options.map((option) => {
                         const isChecked = (input.value || []).includes(option.value);
                         return (
-                          <label key={option.value} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer", fontSize: "14px", color: "#1f2937", fontWeight: "500" }}>
-                            <input
-                              type="checkbox"
-                              value={option.value}
-                              checked={isChecked&& (
+                          <label key={option.value} style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontSize: "14px", color: "#1f2937", fontWeight: "500", userSelect: "none" }}>
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", width: "18px", height: "18px" }}>
+                              <input
+                                type="checkbox"
+                                value={option.value}
+                                checked={isChecked}
+                                style={{ 
+                                  appearance: "none",
+                                  WebkitAppearance: "none",
+                                  width: "18px", 
+                                  height: "18px", 
+                                  cursor: "pointer",
+                                  borderRadius: "4px",
+                                  backgroundColor: isChecked ? "#4338ca" : "#ffffff",
+                                  border: isChecked ? "2px solid #4338ca" : "2px solid #d1d5db",
+                                  transition: "all 0.1s ease",
+                                  margin: 0,
+                                  display: "block"
+                                }}
+                                onChange={(e) => {
+                                  const newValue = [...(input.value || [])];
+                                  if (e.target.checked) {
+                                    newValue.push(option.value);
+                                  } else {
+                                    const index = newValue.indexOf(option.value);
+                                    if (index > -1) newValue.splice(index, 1);
+                                  }
+                                  input.onChange(newValue);
+                                }}
+                              />
+                              {/* 💡 FIXED: The checkmark span sits OUTSIDE the input tag attributes list! */}
+                              {isChecked && (
                                 <span style={{
                                   position: "absolute",
                                   width: "4px",
                                   height: "8px",
                                   border: "solid white",
                                   borderWidth: "0 2px 2px 0",
-                                  transform: "rotate(45deg) translate(-1px, -1px)",
+                                  transform: "rotate(45deg) translate(0px, -1px)",
                                   display: "block",
-                                  zIndex: 1 
+                                  zIndex: 1
                                 }} />
                               )}
-                              onChange={(e) => {
-                                const newValue = [...(input.value || [])];
-                                if (e.target.checked) {
-                                  newValue.push(option.value);
-                                } else {
-                                  const index = newValue.indexOf(option.value);
-                                  if (index > -1) newValue.splice(index, 1);
-                                }
-                                input.onChange(newValue);
-                              }}
-                            />
+                            </span>
                             {option.label}
                           </label>
                         );

@@ -1,4 +1,4 @@
 import { createClient } from "tinacms/dist/client";
 import { queries } from "./types.js";
-export const client = createClient({ cacheDir: "/home/surv/astro-sandbox/tina/__generated__/.cache/1788089270459", url: "http://localhost:4001/graphql", token: "undefined", queries });
+export const client = createClient({ url: "http://localhost:9001/graphql", token: "null", queries });
 export default client;
