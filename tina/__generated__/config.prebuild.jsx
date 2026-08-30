@@ -37,7 +37,7 @@ var config_default = defineConfig({
             type: "string",
             name: "category",
             label: "Category",
-            options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor"]
+            options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor", "Gift Sets"]
           },
           { type: "image", name: "image", label: "Display Image" },
           { type: "number", name: "price", label: "Base Price (\u20B9)" },
