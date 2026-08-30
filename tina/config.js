@@ -46,6 +46,10 @@ export default defineConfig({
             name: "colors",
             label: "Available Colors",
             list: true,
+            ui: {
+              component: 'checkbox-group', // Reinforces the checkbox panel view
+              direction: 'row'            // Automatically shifts options from vertical to horizontal
+            },
             options: [
               { value: "black", label: "Black" },
               { value: "blue", label: "Blue" },
