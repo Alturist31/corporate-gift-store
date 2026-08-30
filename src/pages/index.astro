@@ -15,9 +15,9 @@ const uniqueCategories = ["All", ...new Set(localProducts.map(p => p.data.catego
     <meta charset="utf-8" />
     <title>Venture Solutions Corporate Gifting B2B Catalog</title>
     <style>
-      body { font-family: system-ui, sans-serif; padding: 40px; background: #f3f4f6; color: #1f2937; margin: 0; }
-      main { max-width: 1000px; margin: 0 auto; }
-      h1 { text-align: center; margin-bottom: 5px; }
+      body { font-family: system-ui, sans-serif; padding: 15px; background: #f3f4f6; color: #1f2937; margin: 0; }
+      main { max-width: 1000px; margin: 0 auto;}
+      h1 { text-align: center; margin: 0 auto;}
       
       .filter-menu { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
       .filter-btn { background: white; border: 1px solid #d1d5db; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; }
@@ -32,14 +32,14 @@ const uniqueCategories = ["All", ...new Set(localProducts.map(p => p.data.catego
       .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
       .badge { background: #e0e7ff; color: #4338ca; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; align-self: flex-start; margin-bottom: 10px; }
       .product-card h3 { margin: 8px 0; font-size: 18px; }
-      .meta { font-size: 14px; color: #4b5563; margin-bottom: 15px; }
+      .meta { font-size: 14px; color: #4b5563; margin-bottom: 0px; }
       .meta p { margin: 4px 0; }
     </style>
   </head>
   <body>
    <Header />
     <main>
-      <h1>Venture Solutions Corporate Catalog</h1>
+      <h1>Corporate Catalog</h1>
       <p style="text-align: center; color: #6b7280;">Filter items by category and compute custom volume estimates instantly.</p>
       
       <div class="filter-menu">
