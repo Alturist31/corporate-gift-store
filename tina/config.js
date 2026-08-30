@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig({
   branch: "main",
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || null,
+  clientId: process.env.TINA_CLIENT_ID || null,
   token: process.env.TINA_TOKEN || null,
 
   build: {
