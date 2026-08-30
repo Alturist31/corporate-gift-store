@@ -38,7 +38,7 @@ const uniqueCategories = ["All", ...new Set(localProducts.map(p => p.data.catego
   </head>
   <body>
     <main>
-      <h1>🎁 Dynamic Corporate Catalog</h1>
+      <h1>Dynamic Corporate Catalog</h1>
       <p style="text-align: center; color: #6b7280;">Filter items by category and compute custom volume estimates instantly.</p>
       
       <!-- Interactive Filter Pills -->
@@ -88,6 +88,9 @@ const uniqueCategories = ["All", ...new Set(localProducts.map(p => p.data.catego
                 basePrice={product.data.price} 
                 productName={product.data.title} 
                 availableColors={product.data.colors}
+	productDesc={product.body}
+                categoryName={product.data.category}
+	productImage={product.data.image}
               />
             </div>
           </div>
