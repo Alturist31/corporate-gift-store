@@ -3,7 +3,7 @@ import { defineConfig } from "tinacms";
 var isProduction = false;
 var config_default = defineConfig({
   branch: "main",
-  clientId: process.env.PUBLIC_TINA_CLIENT_ID || null,
+  clientId: process.env.TINA_CLIENT_ID || null,
   token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
@@ -42,6 +42,12 @@ var config_default = defineConfig({
             name: "colors",
             label: "Available Colors",
             list: true,
+            ui: {
+              component: "checkbox-group",
+              // Reinforces the checkbox panel view
+              direction: "row"
+              // Automatically shifts options from vertical to horizontal
+            },
             options: [
               { value: "black", label: "Black" },
               { value: "blue", label: "Blue" },
