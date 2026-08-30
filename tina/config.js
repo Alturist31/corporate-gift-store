@@ -47,8 +47,52 @@ export default defineConfig({
             label: "Available Colors",
             list: true,
             ui: {
-              component: 'checkbox-group', // Reinforces the checkbox panel view
-              direction: 'row'            // Automatically shifts options from vertical to horizontal
+              component: ({ input, field }) => {
+                const options = field.options || [];
+                return (
+                  <div style={{ marginBottom: "20px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px", color: "#374151" }}>
+                      {field.label}
+                    </label>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", background: "#f9fafb", padding: "12px", borderRadius: "6px", border: "1px solid #e5e7eb" }}>
+                      {options.map((option) => {
+                        const isChecked = (input.value || []).includes(option.value);
+                        return (
+                          <label key={option.value} style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer", fontSize: "14px", color: "#1f2937", fontWeight: "500" }}>
+                            <input
+                              type="checkbox"
+                              value={option.value}
+                              checked={isChecked&& (
+                                <span style={{
+                                  position: "absolute",
+                                  width: "4px",
+                                  height: "8px",
+                                  border: "solid white",
+                                  borderWidth: "0 2px 2px 0",
+                                  transform: "rotate(45deg) translate(-1px, -1px)",
+                                  display: "block",
+                                  zIndex: 1 
+                                }} />
+                              )}
+                              onChange={(e) => {
+                                const newValue = [...(input.value || [])];
+                                if (e.target.checked) {
+                                  newValue.push(option.value);
+                                } else {
+                                  const index = newValue.indexOf(option.value);
+                                  if (index > -1) newValue.splice(index, 1);
+                                }
+                                input.onChange(newValue);
+                              }}
+                            />
+                            {option.label}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
             },
             options: [
               { value: "black", label: "Black" },
