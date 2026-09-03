@@ -43,7 +43,7 @@ export default defineConfig({
             type: "string", 
             name: "category", 
             label: "Category",
-            options: ["Tech & Lifestyle", "Office Stationery", "Hampers", "Apparel", "Eco-Friendly", "Leather Goods", "Custom Decor", "Gift Sets"]
+            options: ["Tech & Lifestyle", "Office Stationery", "Diary", "Drinkware", "Eco-Friendly", "Leather Goods", "Keychains", "Gift Sets"]
           },
           { type: "image", name: "image", label: "Display Image" },
           { type: "number", name: "price", label: "Base Price (₹)" },
