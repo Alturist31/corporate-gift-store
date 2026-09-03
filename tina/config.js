@@ -127,7 +127,9 @@ export default defineConfig({
               { value: "tan", label: "Tan" },
               { value: "grey", label: "Grey" },
               { value: "red", label: "Red" },
-              { value: "white", label: "White" }
+              { value: "white", label: "White" },
+              { value: "beige", label: "Beige" },
+              { value: "green", label: "Green" }
             ]
           }
         ],
