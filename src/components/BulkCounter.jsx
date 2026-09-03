@@ -49,7 +49,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
         type="button"
         onClick={() => setIsModalOpen(true)}
         style={{
-          display: 'block', width: '100%', background: '#4338ca', color: 'white',
+          display: 'block', width: '100%', background: '#0A3D33', color: 'white',
           border: 'none', padding: '10px', borderRadius: '6px', fontWeight: 'bold',
           fontSize: '14px', cursor: 'pointer', marginBottom: '12px', transition: 'background 0.2s'
         }}
@@ -112,7 +112,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
                       <span style={{ fontSize: '12px', color: '#64748b', display: 'block' }}>Estimated Value</span>
                       <span style={{ fontSize: '22px', color: '#059669', fontWeight: '800' }}>₹{totalCost.toLocaleString()}</span>
                     </div>
-                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ background: '#25D366', color: 'white', textDecoration: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px' }}>💬 Submit Quote</a>
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ background: '#0A3D33', color: 'white', textDecoration: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px' }}>💬 Request Quote</a>
                   </div>
                 </div>
               </div>
