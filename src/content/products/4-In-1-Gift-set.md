@@ -9,4 +9,4 @@ colors:
   - black
 ---
 
-Premium 4-in-One Gift set with Designer outer box.
+Premium 4-in-One Gift set with Designer Outer box.
