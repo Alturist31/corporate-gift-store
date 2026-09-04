@@ -16,4 +16,4 @@ This Premium Gift Set is a sophisticated corporate gifting solution that combine
 
 Designed for corporate gifting, employee welcome kits, client appreciation gifts, executive hampers, and promotional branding, this gift set offers high perceived value and daily usability. The vacuum mug keeps beverages hot or cold for hours, the diary is perfect for professional note-taking, and the metal pen adds a premium writing experience.
 
-Available in Brown, Blue, Black, White, and Grey, the set is ideal for custom logo branding, making it a powerful promotional product for businesses and brands.
+This gift set is ideal for custom logo branding, making it a powerful promotional product for businesses and brands.
