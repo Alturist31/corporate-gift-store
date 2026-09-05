@@ -167,7 +167,7 @@ export type DocumentNode = Product | Folder;
 export type Product = Node & Document & {
   __typename?: 'Product';
   title: Scalars['String']['output'];
-  category?: Maybe<Scalars['String']['output']>;
+  category?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   image?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['Float']['output']>;
   moq?: Maybe<Scalars['Float']['output']>;
@@ -298,7 +298,7 @@ export type DocumentMutation = {
 
 export type ProductMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
-  category?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   image?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   moq?: InputMaybe<Scalars['Float']['input']>;
@@ -346,14 +346,14 @@ export type ProductFilter = {
   colors?: StringFilter | null | undefined;
 };
 
-export type ProductPartsFragment = { __typename: 'Product', title: string, category: string | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
+export type ProductPartsFragment = { __typename: 'Product', title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
 
 export type ProductQueryVariables = Exact<{
   relativePath: string;
 }>;
 
 
-export type ProductQuery = { product: { __typename: 'Product', id: string, title: string, category: string | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ProductQuery = { product: { __typename: 'Product', id: string, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type ProductConnectionQueryVariables = Exact<{
   before?: string | null | undefined;
@@ -365,7 +365,7 @@ export type ProductConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, title: string, category: string | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const ProductPartsFragmentDoc = gql`
     fragment ProductParts on Product {

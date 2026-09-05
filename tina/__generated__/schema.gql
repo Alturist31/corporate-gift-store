@@ -89,7 +89,7 @@ union DocumentNode = Product | Folder
 
 type Product implements Node & Document {
   title: String!
-  category: String
+  category: [String]
   image: String
   price: Float
   moq: Float
@@ -172,7 +172,7 @@ input DocumentMutation {
 
 input ProductMutation {
   title: String
-  category: String
+  category: [String]
   image: String
   price: Float
   moq: Float
