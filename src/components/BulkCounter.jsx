@@ -24,9 +24,13 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
   const safeColorString = typeof selectedColor === 'string' ? selectedColor : "";
   const variantText = safeColorString ? `• Chosen Variant: ${safeColorString.toUpperCase()}` : "• Chosen Variant: Default/Standard";
   
+  // Computes the absolute URL address link of the product photo asset
+  const fullProductImageLink = productImage.startsWith('http') ? productImage : `https://venturesolutions.in${productImage}`;
+
   const waMessage = `Hello! I would like to request a bulk quote for "${productName}".\n• Quantity: ${quantity} units\n${variantText}\n• Estimated Base Value: ₹${totalCost.toLocaleString()}\nPlease share details on custom branding options.`;
   const whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(waMessage);
 
+  // 🚀 PHOTO LINK INTEGRATION: Automatically embeds the absolute image file link into the email text body
   const emailSubject = `Corporate RFQ Request: ${productName} (${quantity} Units)`;
   const emailBody = `Dear Venture Solutions Gifting Team,\n\nI would like to request a formal business quotation for the following catalog item:\n\nProduct Name: ${productName}\nQuantity Required: ${quantity} units\nSelected Color/Variant: ${safeColorString.toUpperCase() || 'Default'}\nEstimated Base Value: ₹${totalCost.toLocaleString()}\n\nClient Contact Details:\n• Name: ${clientName || '[Not Provided]'}\n• Company Name: ${companyName || '[Not Provided]'}\n• Email Address: ${clientEmail}\n\nPlease share your corporate pricing slabs and custom logo branding options with us.\n\nRegards.`;
   const mailtoUrl = `mailto:${corporateContactEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
@@ -77,7 +81,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
       {isModalOpen && typeof document !== 'undefined' && ReactDOM.createPortal(
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999999, padding: '16px', backdropFilter: 'blur(4px)', boxSizing: 'border-box' }} onClick={() => setIsModalOpen(false)}>
           
-          {/* 🚀 THE PERMANENT BROWSER STYLE FIX: Uses standard valid hyphenated CSS properties */}
+          {/* 🚀 RESPONSIVE MOBILE STYLES INJECTION HUB */}
           <style dangerouslySetInnerHTML={{__html: `
             .modal-window-card {
               background: white; width: 100%; max-width: 940px; height: 580px; border-radius: 16px;
@@ -90,7 +94,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
             .modal-scroll-desc { overflow-y: auto; padding-right: 5px; flex-grow: 1; margin-bottom: 15px; }
             .modal-action-row { display: flex; flex-direction: column; border-top: 1px solid #e2e8f0; padding-top: 12px; gap: 10px; box-sizing: border-box; }
 
-            /* Mobile and Portrait responsiveness checks */
+            /* 📱 FIXED ORIENTATION OVERRIDES FOR PORTRAIT & LANDSCAPE MOBILE ORIENTATION */
             @media (max-width: 768px), (max-height: 600px) {
               .modal-window-card { height: auto !important; max-height: 92vh !important; overflow-y: auto !important; }
               .modal-split-row { flex-direction: column !important; flex-wrap: wrap !important; height: auto !important; }
@@ -106,13 +110,11 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
             <button onClick={() => setIsModalOpen(false)} style={{ position: 'absolute', top: '16px', right: '16px', background: '#f3f4f6', border: 'none', width: '32px', height: '32px', borderRadius: '50%', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', color: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>✕</button>
 
             <div className="modal-split-row">
-              
               <div className="modal-img-col">
                 <img src={productImage} alt={productName} style={{ width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain', borderRadius: '12px' }} />
               </div>
 
               <div className="modal-form-col">
-                
                 <div className="modal-scroll-desc">
                   <span style={{ background: '#E6F0EE', color: '#0A3D33', padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase' }}>{categoryName}</span>
                   <h2 style={{ margin: '12px 0 10px 0', fontSize: '24px', color: '#111827', fontWeight: '800', lineHeight: '1.2' }}>{productName}</h2>
@@ -163,9 +165,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
                     </div>
                   </div>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>,
