@@ -1,13 +1,14 @@
+import React from "react";
 import { defineConfig } from "tinacms";
 
 const isLocal = process.env.NODE_ENV === "development";
 
 export default defineConfig({
-  // Uses dummy tokens for prod build, but completely clears them for local dev
   branch: isLocal ? undefined : (process.env.NEXT_PUBLIC_TINA_BRANCH || "main"),
   clientId: isLocal ? undefined : process.env.TINA_CLIENT_ID || null,
   token: isLocal ? undefined : process.env.TINA_TOKEN || null,
-
+  build: { outputFolder: "admin", publicFolder: "public" },
+  media: { tina: { mediaRoot: "uploads", publicFolder: "public" } },
 
 //const isProduction = process.env.NODE_ENV === "production";
 
@@ -16,17 +17,28 @@ export default defineConfig({
   //clientId: process.env.TINA_CLIENT_ID || null,
   //token: process.env.TINA_TOKEN || null,
 
-  build: {
-    outputFolder: "admin",
-    publicFolder: "public",
+ ui: {
+    brand: {
+      /* 💡 By passing a React component into Title, Tina deletes the llama asset and uses your custom brand layout row instead */
+      Title: () => (
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 0" }}>
+          <img 
+            src="/logo.png" 
+            alt="Venture Solutions Logo" 
+            style={{ height: "32px", width: "auto", objectFit: "contain", display: "block" }} 
+            onError={(e) => {
+              // Fail-safe backup routing path
+              e.currentTarget.src = "/public/logo.png";
+            }}
+          />
+          <span style={{ fontSize: "15px", fontWeight: "800", color: "#111827", letterSpacing: "-0.5px", fontFamily: "system-ui, sans-serif" }}>
+            Venture<span style={{ color: "#0A3D33" }}>Solutions</span>
+          </span>
+        </div>
+      )
+    }
   },
-  media: {
-    tina: {
-      mediaRoot: "uploads",
-      publicFolder: "public",
-    },
-  },
-  
+
   //isCloud: isProduction,
   //local: !isProduction,
 

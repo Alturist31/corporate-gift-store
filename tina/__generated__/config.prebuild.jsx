@@ -1,25 +1,39 @@
 // tina/config.js
+import React from "react";
 import { defineConfig } from "tinacms";
 import { jsx, jsxs } from "react/jsx-runtime";
 var isLocal = true;
 var config_default = defineConfig({
-  // Uses dummy tokens for prod build, but completely clears them for local dev
   branch: isLocal ? void 0 : process.env.NEXT_PUBLIC_TINA_BRANCH || "main",
   clientId: isLocal ? void 0 : process.env.TINA_CLIENT_ID || null,
   token: isLocal ? void 0 : process.env.TINA_TOKEN || null,
+  build: { outputFolder: "admin", publicFolder: "public" },
+  media: { tina: { mediaRoot: "uploads", publicFolder: "public" } },
   //const isProduction = process.env.NODE_ENV === "production";
   //export default defineConfig({
   //branch: "main",
   //clientId: process.env.TINA_CLIENT_ID || null,
   //token: process.env.TINA_TOKEN || null,
-  build: {
-    outputFolder: "admin",
-    publicFolder: "public"
-  },
-  media: {
-    tina: {
-      mediaRoot: "uploads",
-      publicFolder: "public"
+  ui: {
+    brand: {
+      /* 💡 By passing a React component into Title, Tina deletes the llama asset and uses your custom brand layout row instead */
+      Title: () => jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px", padding: "10px 0" }, children: [
+        jsx(
+          "img",
+          {
+            src: "/logo.png",
+            alt: "Venture Solutions Logo",
+            style: { height: "32px", width: "auto", objectFit: "contain", display: "block" },
+            onError: (e) => {
+              e.currentTarget.src = "/public/logo.png";
+            }
+          }
+        ),
+        jsxs("span", { style: { fontSize: "15px", fontWeight: "800", color: "#111827", letterSpacing: "-0.5px", fontFamily: "system-ui, sans-serif" }, children: [
+          "Venture",
+          jsx("span", { style: { color: "#0A3D33" }, children: "Solutions" })
+        ] })
+      ] })
     }
   },
   //isCloud: isProduction,
