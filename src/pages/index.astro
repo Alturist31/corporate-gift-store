@@ -50,16 +50,23 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       .sort-select:focus { border-color: #0A3D33; background-color: white; box-shadow: 0 0 0 3px rgba(10, 61, 51, 0.1); }
       main { max-width: 1200px; margin: 0 auto; padding: 48px 32px; }
       
-      .count-badge { display: inline-block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 18px; background: white; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; }
-      .count-badge span { color: #0A3D33; font-weight: 800; }
+      .count-badge { display: inline-block; font-size: 14px; font-weight: 700; color: #0A3D33; margin-bottom: 22px; background: #E6F0EE; padding: 8px 18px; border-radius: 8px; border: 1px dashed #0A3D33; letter-spacing: 0.25px; box-shadow: 0 2px 4px rgba(10, 61, 51, 0.02); }
+      .count-badge .count-number-box { color: #0A3D33 !important; font-weight: 800 !important; font-size: 14px !important; margin: 0 3px !important; display: inline-block !important; }
 
       .filter-menu { display: flex; justify-content: center; gap: 12px; margin: 0 0 32px 0; flex-wrap: wrap; }
       .filter-btn { background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 24px; cursor: pointer; font-weight: 600; font-size: 14px; color: #475569; transition: all 0.2s; }
       .filter-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
       .filter-btn.active { background: #0A3D33; color: white; border-color: #0A3D33; }
+      
       .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; }
-      .product-card { background: white; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; }
+      .product-card { background: white; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; opacity: 1; transition: transform 0.2s, box-shadow 0.2s, opacity 0.25s ease-out; animation: cardFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
       .product-card:hover { transform: translateY(-4px); }
+      
+      @keyframes cardFadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
       .product-image { width: 100%; height: 220px; object-fit: cover; background-color: #f8fafc; }
       .card-content { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
       .badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
@@ -72,7 +79,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         .brand-header { padding: 16px 20px; justify-content: center; text-align: center; }
         .toolbar-controls { width: 100%; flex-direction: column; flex-wrap: wrap; gap: 10px; align-items: stretch; }
         .search-wrapper, .sort-select { width: 100% !important; max-width: 100% !important; }
-        .reset-btn { width: 100%; text-align: center; display: none; } /* Kept default hidden */
+        .reset-btn { width: 100%; text-align: center; display: none; }
         main { padding: 24px 16px; }
       }
     </style>
@@ -108,7 +115,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       </div>
 
       <div class="count-badge" id="catalogCounter">
-        Showing <span>{localProducts.length}</span> Options
+        Showing <span class="count-number-box">{localProducts.length}</span> Options
       </div>
 
       <div class="catalog-grid" id="catalogGrid">
@@ -167,6 +174,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       function filterCatalog() {
         const lowerCategory = activeCategory.toLowerCase();
         let visibleCount = 0;
+        
         cards.forEach(card => {
           const title = card.getAttribute("data-title") || "";
           const desc = card.getAttribute("data-desc") || "";
@@ -174,16 +182,21 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
           const cardCategories = JSON.parse(cardCategoriesStr);
           const matchesCategory = activeCategory === "All" || cardCategories.includes(lowerCategory);
           const matchesSearch = searchQuery === "" || title.includes(searchQuery) || desc.includes(searchQuery) || cardCategoriesStr.includes(searchQuery);
+          
           if (matchesCategory && matchesSearch) {
-            card.style.display = 'flex';
+            if (card.style.display !== 'flex') {
+              card.style.opacity = '0';
+              card.style.display = 'flex';
+              setTimeout(() => { card.style.opacity = '1'; }, 10);
+            }
             visibleCount++;
           } else {
             card.style.display = 'none';
           }
         });
-        catalogCounter.innerHTML = `Showing <span>${visibleCount}</span> Option${visibleCount === 1 ? '' : 's'}`;
         
-        // 🚀 THE EXPLICIT FIX: Only shows button if a selection is genuinely active, completely ignoring empty values or phantom placeholders
+        catalogCounter.innerHTML = `Showing <span class="count-number-box">${visibleCount}</span> Option${visibleCount === 1 ? '' : 's'}`;
+        
         const isSortActive = priceSorter.value !== 'default' && priceSorter.value !== '';
         if (searchQuery !== '' || activeCategory !== 'All' || isSortActive) {
           resetFiltersBtn.style.display = 'block';
@@ -214,9 +227,12 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         priceSorter.value = 'default';
         activeCategory = 'All';
         document.querySelector('.filter-btn.active')?.classList.remove('active');
+        
+        // 🚀 THE ARRAY ELEMENT FIX: Targets the explicit index array node zero safely to wipe fields
         if (buttons && buttons.length > 0) {
-          buttons[0].classList.add('active'); // Safely targets index zero node element
+          buttons[0].classList.add('active');
         }
+        
         sortCatalog();
       });
 
