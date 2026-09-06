@@ -26,33 +26,17 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
     <title>Corporate Gifting B2B Catalog</title>
     <style>
       body { font-family: system-ui, sans-serif; padding: 0; background: #f8fafc; color: #0f172a; margin: 0; }
-      
-      /* Base brand header box */
-      .brand-header { 
-        background: white; 
-        padding: 16px 48px; 
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
-        display: flex; 
-        align-items: center; 
-        justify-content: space-between; 
-        border-bottom: 1px solid #e2e8f0; 
-        flex-wrap: wrap; 
-        gap: 20px; 
-      }
+      .brand-header { background: white; padding: 16px 48px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; gap: 20px; }
       .logo-link { text-decoration: none; cursor: pointer; display: inline-block; }
       .logo-box { display: flex; align-items: center; gap: 14px; }
       .logo-img { height: 48px; width: auto; object-fit: contain; }
       .brand-title { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.75px; }
       .brand-title span { color: #0A3D33; }
+      .toolbar-controls { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
       
-      /* Controls default baseline laptop layout */
-      .toolbar-controls { 
-        display: flex; 
-        align-items: center; 
-        gap: 12px; 
-        flex-wrap: nowrap; 
-      }
-      
+      .reset-btn { background: #ef4444; color: white; border: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; transition: background 0.2s; display: none; white-space: nowrap; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.15); }
+      .reset-btn:hover { background: #dc2626; }
+
       .search-wrapper { position: relative; width: 240px; }
       .search-input { width: 100%; padding: 10px 16px 10px 38px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; outline: none; box-sizing: border-box; background: #f8fafc; transition: all 0.2s; }
       .search-input:focus { border-color: #0A3D33; background: white; box-shadow: 0 0 0 3px rgba(10, 61, 51, 0.1); }
@@ -64,12 +48,8 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         background-repeat: no-repeat !important; background-position: right 14px center !important; background-size: 16px !important;
       }
       .sort-select:focus { border-color: #0A3D33; background-color: white; box-shadow: 0 0 0 3px rgba(10, 61, 51, 0.1); }
-      
-      /* 🚀 NEW: Dynamic Reset Button Layout Adjuster */
-      .reset-btn { background: #ef4444; color: white; border: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; transition: background 0.2s; display: none; white-space: nowrap; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.15); }
-      .reset-btn:hover { background: #dc2626; }
-
       main { max-width: 1200px; margin: 0 auto; padding: 48px 32px; }
+      
       .count-badge { display: inline-block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 18px; background: white; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; }
       .count-badge span { color: #0A3D33; font-weight: 800; }
 
@@ -92,7 +72,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         .brand-header { padding: 16px 20px; justify-content: center; text-align: center; }
         .toolbar-controls { width: 100%; flex-direction: column; flex-wrap: wrap; gap: 10px; align-items: stretch; }
         .search-wrapper, .sort-select { width: 100% !important; max-width: 100% !important; }
-        .reset-btn { width: 100%; text-align: center; display: block; }
+        .reset-btn { width: 100%; text-align: center; display: none; } /* Kept default hidden */
         main { padding: 24px 16px; }
       }
     </style>
@@ -183,6 +163,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       const cards = document.querySelectorAll(".catalog-grid .product-card") as NodeListOf<HTMLElement>;
       let activeCategory = "All";
       let searchQuery = "";
+
       function filterCatalog() {
         const lowerCategory = activeCategory.toLowerCase();
         let visibleCount = 0;
@@ -202,17 +183,19 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         });
         catalogCounter.innerHTML = `Showing <span>${visibleCount}</span> Option${visibleCount === 1 ? '' : 's'}`;
         
-        // Dynamic visibility evaluation rule pass
-        if (searchQuery !== '' || activeCategory !== 'All' || priceSorter.value !== 'default') {
+        // 🚀 THE EXPLICIT FIX: Only shows button if a selection is genuinely active, completely ignoring empty values or phantom placeholders
+        const isSortActive = priceSorter.value !== 'default' && priceSorter.value !== '';
+        if (searchQuery !== '' || activeCategory !== 'All' || isSortActive) {
           resetFiltersBtn.style.display = 'block';
         } else {
           resetFiltersBtn.style.display = 'none';
         }
       }
+
       function sortCatalog() {
         const sortType = priceSorter.value;
         const cardsArray = Array.from(cards);
-        if (sortType === 'default') {
+        if (sortType === 'default' || sortType === '') {
           cardsArray.sort((a, b) => (a.getAttribute('data-initial-order') || '').localeCompare(b.getAttribute('data-initial-order') || ''));
         } else {
           cardsArray.sort((a, b) => {
@@ -224,6 +207,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         cardsArray.forEach(card => catalogGrid.appendChild(card));
         filterCatalog();
       }
+
       resetFiltersBtn?.addEventListener('click', () => {
         searchInput.value = '';
         searchQuery = '';
@@ -231,10 +215,11 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         activeCategory = 'All';
         document.querySelector('.filter-btn.active')?.classList.remove('active');
         if (buttons && buttons.length > 0) {
-          buttons[0].classList.add('active'); // Target elements index zero cleanly
+          buttons[0].classList.add('active'); // Safely targets index zero node element
         }
         sortCatalog();
       });
+
       buttons.forEach(btn => {
         btn.addEventListener("click", () => {
           document.querySelector(".filter-btn.active")?.classList.remove("active");
@@ -243,6 +228,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
           filterCatalog();
         });
       });
+
       searchInput?.addEventListener("input", (e) => {
         searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
         filterCatalog();
