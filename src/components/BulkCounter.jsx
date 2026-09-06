@@ -54,19 +54,17 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
     }
   };
 
-  // 🚀 UPDATED EFFECT HUB: Wipes form memory completely whenever the popup modal visibility toggles off
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
       setFormError('');
     } else {
       document.body.style.overflow = '';
-      // 💡 THE PRIVACY FIX: Resets all text values instantly upon closing!
       setClientName('');
       setCompanyName('');
       setClientEmail('');
       setFormError('');
-      setQuantity(initialQty); // Optional reset order qty to baseline MOQ
+      setQuantity(initialQty);
     }
     return () => { document.body.style.overflow = ''; };
   }, [isModalOpen]);
@@ -77,22 +75,45 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
       </button>
 
       {isModalOpen && typeof document !== 'undefined' && ReactDOM.createPortal(
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999999, padding: '20px', backdropFilter: 'blur(4px)' }} onClick={() => setIsModalOpen(false)}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999999, padding: '16px', backdropFilter: 'blur(4px)', boxSizing: 'border-box' }} onClick={() => setIsModalOpen(false)}>
           
-          <div style={{ background: 'white', width: '100%', maxWidth: '940px', height: '580px', borderRadius: '16px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.3)', overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column' }} onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setIsModalOpen(false)} style={{ position: 'absolute', top: '20px', right: '20px', background: '#f3f4f6', border: 'none', width: '32px', height: '32px', borderRadius: '50%', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', color: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>✕</button>
+          {/* 🚀 THE PERMANENT BROWSER STYLE FIX: Uses standard valid hyphenated CSS properties */}
+          <style dangerouslySetInnerHTML={{__html: `
+            .modal-window-card {
+              background: white; width: 100%; max-width: 940px; height: 580px; border-radius: 16px;
+              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); overflow: hidden; position: relative;
+              display: flex; flex-direction: column; box-sizing: border-box;
+            }
+            .modal-split-row { display: flex; flex-direction: row; flex-wrap: nowrap; width: 100%; height: 100%; align-items: stretch; }
+            .modal-img-col { flex: 0 0 45%; width: 45%; background: #f8fafc; display: flex; align-items: center; justify-content: center; padding: 30px; border-right: 1px solid #e2e8f0; box-sizing: border-box; }
+            .modal-form-col { flex: 0 0 55%; width: 55%; padding: 35px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; }
+            .modal-scroll-desc { overflow-y: auto; padding-right: 5px; flex-grow: 1; margin-bottom: 15px; }
+            .modal-action-row { display: flex; flex-direction: column; border-top: 1px solid #e2e8f0; padding-top: 12px; gap: 10px; box-sizing: border-box; }
 
-            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', width: '100%', height: '100%', alignItems: 'stretch' }}>
+            /* Mobile and Portrait responsiveness checks */
+            @media (max-width: 768px), (max-height: 600px) {
+              .modal-window-card { height: auto !important; max-height: 92vh !important; overflow-y: auto !important; }
+              .modal-split-row { flex-direction: column !important; flex-wrap: wrap !important; height: auto !important; }
+              .modal-img-col { flex: 1 1 100% !important; width: 100% !important; border-right: none !important; border-bottom: 1px solid #e2e8f0 !important; padding: 20px !important; }
+              .modal-img-col img { max-height: 180px !important; }
+              .modal-form-col { flex: 1 1 100% !important; width: 100% !important; padding: 20px !important; height: auto !important; }
+              .modal-scroll-desc { overflow-y: visible !important; height: auto !important; flex-grow: 0 !important; }
+              .modal-action-row { width: 100% !important; }
+            }
+          `}} />
+
+          <div className="modal-window-card" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setIsModalOpen(false)} style={{ position: 'absolute', top: '16px', right: '16px', background: '#f3f4f6', border: 'none', width: '32px', height: '32px', borderRadius: '50%', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', color: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>✕</button>
+
+            <div className="modal-split-row">
               
-              {/* LEFT HALF PANEL */}
-              <div style={{ flex: '0 0 45%', width: '45%', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px', borderRight: '1px solid #e2e8f0', boxSizing: 'border-box' }}>
+              <div className="modal-img-col">
                 <img src={productImage} alt={productName} style={{ width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain', borderRadius: '12px' }} />
               </div>
 
-              {/* RIGHT HALF PANEL */}
-              <div style={{ flex: '0 0 55%', width: '55%', padding: '35px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', boxSizing: 'border-box' }}>
+              <div className="modal-form-col">
                 
-                <div style={{ overflowY: 'auto', paddingRight: '5px', flexGrow: 1, marginBottom: '15px' }}>
+                <div className="modal-scroll-desc">
                   <span style={{ background: '#E6F0EE', color: '#0A3D33', padding: '4px 10px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase' }}>{categoryName}</span>
                   <h2 style={{ margin: '12px 0 10px 0', fontSize: '24px', color: '#111827', fontWeight: '800', lineHeight: '1.2' }}>{productName}</h2>
                   <div style={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.5', whiteSpace: 'pre-wrap', borderLeft: '3px solid #0A3D33', paddingLeft: '15px' }}>
@@ -100,7 +121,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
                   </div>
                 </div>
 
-                <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0', flexShrink: 0 }}>
+                <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0', flexShrink: 0, boxSizing: 'border-box' }}>
                   {availableColors && availableColors.length > 0 && (
                     <div style={{ marginBottom: '10px' }}>
                       <label style={{ fontSize: '13px', fontWeight: '600', color: '#374151', display: 'block', marginBottom: '6px' }}>Select Color Variant: <span style={{ color: '#0A3D33' }}>{safeColorString.toUpperCase()}</span></label>
@@ -120,7 +141,7 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
                     <span style={{ fontSize: '12px', color: '#64748b' }}>(Multiples of {initialQty} only)</span>
                   </div>
 
-                  <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '1px dashed #cbd5e1', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '1px dashed #cbd5e1', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '8px', boxSizing: 'border-box' }}>
                     <span style={{ fontSize: '11px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' }}>Corporate Email RFQ Parameters (Email is Required):</span>
                     <input type="email" placeholder="Business Email ID *" value={clientEmail} onChange={(e) => { setClientEmail(e.target.value); setFormError(''); }} style={{ width: '100%', padding: '8px 12px', fontSize: '12px', borderRadius: '6px', border: clientEmail ? '1px solid #0A3D33' : '1px solid #cbd5e1', outline: 'none', boxSizing: 'border-box' }} required />
                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -130,8 +151,8 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
                     {formError && <div style={{ fontSize: '11px', fontWeight: '600', color: '#ef4444', marginTop: '2px' }}>{formError}</div>}
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #e2e8f0', paddingTop: '12px', gap: '10px', boxSizing: 'border-box' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <div className="modal-action-row">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '100%' }}>
                       <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '600' }}>Estimated Value:</span>
                       <span style={{ fontSize: '22px', color: '#059669', fontWeight: '800', wordBreak: 'break-all' }}>₹{totalCost.toLocaleString()}</span>
                     </div>
@@ -153,4 +174,3 @@ export default function BulkCounter({ initialQty = 100, basePrice = 450, product
     </div>
   );
 }
-
