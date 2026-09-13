@@ -1,4 +1,5 @@
 ---
+isOutOfStock: true
 isFeatured: true
 title: Vacuum Flask Set
 category:
