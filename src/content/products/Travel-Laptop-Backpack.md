@@ -1,6 +1,8 @@
 ---
+isFeatured: true
 title: Travel Laptop Backpack
-category: Tech & Lifestyle
+category:
+  - Tech & Lifestyle
 image: /uploads/H1571.jpg
 price: 1000
 moq: 15

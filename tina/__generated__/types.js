@@ -8,6 +8,7 @@ export function gql(strings, ...args) {
 export const ProductPartsFragmentDoc = gql`
     fragment ProductParts on Product {
   __typename
+  isFeatured
   title
   category
   image

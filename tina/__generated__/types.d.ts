@@ -166,6 +166,7 @@ export type DocumentNode = Product | Folder;
 
 export type Product = Node & Document & {
   __typename?: 'Product';
+  isFeatured?: Maybe<Scalars['Boolean']['output']>;
   title: Scalars['String']['output'];
   category?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   image?: Maybe<Scalars['String']['output']>;
@@ -176,6 +177,11 @@ export type Product = Node & Document & {
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
+};
+
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type StringFilter = {
@@ -209,6 +215,7 @@ export type RichTextFilter = {
 };
 
 export type ProductFilter = {
+  isFeatured?: InputMaybe<BooleanFilter>;
   title?: InputMaybe<StringFilter>;
   category?: InputMaybe<StringFilter>;
   image?: InputMaybe<ImageFilter>;
@@ -297,6 +304,7 @@ export type DocumentMutation = {
 };
 
 export type ProductMutation = {
+  isFeatured?: InputMaybe<Scalars['Boolean']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   image?: InputMaybe<Scalars['String']['input']>;
@@ -304,6 +312,11 @@ export type ProductMutation = {
   moq?: InputMaybe<Scalars['Float']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
   colors?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type BooleanFilter = {
+  eq?: boolean | null | undefined;
+  exists?: boolean | null | undefined;
 };
 
 export type StringFilter = {
@@ -337,6 +350,7 @@ export type RichTextFilter = {
 };
 
 export type ProductFilter = {
+  isFeatured?: BooleanFilter | null | undefined;
   title?: StringFilter | null | undefined;
   category?: StringFilter | null | undefined;
   image?: ImageFilter | null | undefined;
@@ -346,14 +360,14 @@ export type ProductFilter = {
   colors?: StringFilter | null | undefined;
 };
 
-export type ProductPartsFragment = { __typename: 'Product', title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
+export type ProductPartsFragment = { __typename: 'Product', isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
 
 export type ProductQueryVariables = Exact<{
   relativePath: string;
 }>;
 
 
-export type ProductQuery = { product: { __typename: 'Product', id: string, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ProductQuery = { product: { __typename: 'Product', id: string, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type ProductConnectionQueryVariables = Exact<{
   before?: string | null | undefined;
@@ -365,11 +379,12 @@ export type ProductConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const ProductPartsFragmentDoc = gql`
     fragment ProductParts on Product {
   __typename
+  isFeatured
   title
   category
   image

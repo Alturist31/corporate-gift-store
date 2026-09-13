@@ -88,6 +88,7 @@ type Collection {
 union DocumentNode = Product | Folder
 
 type Product implements Node & Document {
+  isFeatured: Boolean
   title: String!
   category: [String]
   image: String
@@ -98,6 +99,11 @@ type Product implements Node & Document {
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
+}
+
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
 }
 
 input StringFilter {
@@ -131,6 +137,7 @@ input RichTextFilter {
 }
 
 input ProductFilter {
+  isFeatured: BooleanFilter
   title: StringFilter
   category: StringFilter
   image: ImageFilter
@@ -171,6 +178,7 @@ input DocumentMutation {
 }
 
 input ProductMutation {
+  isFeatured: Boolean
   title: String
   category: [String]
   image: String

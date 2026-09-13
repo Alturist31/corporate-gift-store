@@ -1,5 +1,6 @@
 fragment ProductParts on Product {
   __typename
+  isFeatured
   title
   category
   image

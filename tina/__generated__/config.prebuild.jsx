@@ -17,23 +17,51 @@ var config_default = defineConfig({
   ui: {
     brand: {
       /* 💡 By passing a React component into Title, Tina deletes the llama asset and uses your custom brand layout row instead */
-      Title: () => jsxs("div", { style: { display: "flex", alignItems: "center", gap: "10px", padding: "10px 0" }, children: [
-        jsx(
-          "img",
-          {
-            src: "/logo.png",
-            alt: "Venture Solutions Logo",
-            style: { height: "32px", width: "auto", objectFit: "contain", display: "block" },
-            onError: (e) => {
-              e.currentTarget.src = "/public/logo.png";
-            }
-          }
-        ),
-        jsxs("span", { style: { fontSize: "15px", fontWeight: "800", color: "#111827", letterSpacing: "-0.5px", fontFamily: "system-ui, sans-serif" }, children: [
-          "Venture",
-          jsx("span", { style: { color: "#0A3D33" }, children: "Solutions" })
-        ] })
-      ] })
+      Title: () => jsxs(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "10px 0"
+          },
+          children: [
+            jsx(
+              "img",
+              {
+                src: "/logo.png",
+                alt: "Venture Solutions Logo",
+                style: {
+                  height: "32px",
+                  width: "auto",
+                  objectFit: "contain",
+                  display: "block"
+                },
+                onError: (e) => {
+                  e.currentTarget.src = "/public/logo.png";
+                }
+              }
+            ),
+            jsxs(
+              "span",
+              {
+                style: {
+                  fontSize: "15px",
+                  fontWeight: "800",
+                  color: "#111827",
+                  letterSpacing: "-0.5px",
+                  fontFamily: "system-ui, sans-serif"
+                },
+                children: [
+                  "Venture",
+                  jsx("span", { style: { color: "#0A3D33" }, children: "Solutions" })
+                ]
+              }
+            )
+          ]
+        }
+      )
     }
   },
   //isCloud: isProduction,
@@ -46,7 +74,14 @@ var config_default = defineConfig({
         path: "src/content/products",
         format: "md",
         fields: [
-          { type: "string", name: "title", label: "Product Name", isTitle: true, required: true },
+          { type: "boolean", name: "isFeatured", label: "Pin to Top (Feature Product Visibility)" },
+          {
+            type: "string",
+            name: "title",
+            label: "Product Name",
+            isTitle: true,
+            required: true
+          },
           {
             type: "string",
             name: "category",
@@ -56,58 +91,145 @@ var config_default = defineConfig({
               component: ({ input, field }) => {
                 const options = field.options || [];
                 return jsxs("div", { style: { marginBottom: "20px" }, children: [
-                  jsx("label", { style: { display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px", color: "#374151" }, children: field.label }),
-                  jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: "16px", background: "#f9fafb", padding: "12px", borderRadius: "6px", border: "1px solid #e5e7eb" }, children: options.map((option) => {
-                    const val = typeof option === "string" ? option : option.value;
-                    const lbl = typeof option === "string" ? option : option.label;
-                    const isChecked = (input.value || []).includes(val);
-                    return jsxs("label", { style: { display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontSize: "14px", color: "#1f2937", fontWeight: "500", userSelect: "none" }, children: [
-                      jsxs("span", { style: { display: "flex", alignItems: "center", justifyContent: "center", position: "relative", width: "18px", height: "18px" }, children: [
-                        jsx(
-                          "input",
+                  jsx(
+                    "label",
+                    {
+                      style: {
+                        display: "block",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        marginBottom: "8px",
+                        color: "#374151"
+                      },
+                      children: field.label
+                    }
+                  ),
+                  jsx(
+                    "div",
+                    {
+                      style: {
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "16px",
+                        background: "#f9fafb",
+                        padding: "12px",
+                        borderRadius: "6px",
+                        border: "1px solid #e5e7eb"
+                      },
+                      children: options.map((option) => {
+                        const val = typeof option === "string" ? option : option.value;
+                        const lbl = typeof option === "string" ? option : option.label;
+                        const isChecked = (input.value || []).includes(val);
+                        return jsxs(
+                          "label",
                           {
-                            type: "checkbox",
-                            value: val,
-                            checked: isChecked,
                             style: {
-                              appearance: "none",
-                              WebkitAppearance: "none",
-                              width: "18px",
-                              height: "18px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
                               cursor: "pointer",
-                              borderRadius: "4px",
-                              backgroundColor: isChecked ? "#0A3D33" : "#ffffff",
-                              border: isChecked ? "2px solid #0A3D33" : "2px solid #d1d5db",
-                              transition: "all 0.1s ease",
-                              margin: 0,
-                              display: "block"
+                              fontSize: "14px",
+                              color: "#1f2937",
+                              fontWeight: "500",
+                              userSelect: "none"
                             },
-                            onChange: (e) => {
-                              const newValue = [...input.value || []];
-                              if (e.target.checked) {
-                                newValue.push(val);
-                              } else {
-                                const index = newValue.indexOf(val);
-                                if (index > -1) newValue.splice(index, 1);
-                              }
-                              input.onChange(newValue);
-                            }
-                          }
-                        ),
-                        isChecked && jsx("span", { style: { position: "absolute", width: "4px", height: "8px", border: "solid white", borderWidth: "0 2px 2px 0", transform: "rotate(45deg) translate(0px, -1px)", display: "block", zIndex: 1 } })
-                      ] }),
-                      lbl
-                    ] }, val);
-                  }) })
+                            children: [
+                              jsxs(
+                                "span",
+                                {
+                                  style: {
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    position: "relative",
+                                    width: "18px",
+                                    height: "18px"
+                                  },
+                                  children: [
+                                    jsx(
+                                      "input",
+                                      {
+                                        type: "checkbox",
+                                        value: val,
+                                        checked: isChecked,
+                                        style: {
+                                          appearance: "none",
+                                          WebkitAppearance: "none",
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                          borderRadius: "4px",
+                                          backgroundColor: isChecked ? "#0A3D33" : "#ffffff",
+                                          border: isChecked ? "2px solid #0A3D33" : "2px solid #d1d5db",
+                                          transition: "all 0.1s ease",
+                                          margin: 0,
+                                          display: "block"
+                                        },
+                                        onChange: (e) => {
+                                          const newValue = [...input.value || []];
+                                          if (e.target.checked) {
+                                            newValue.push(val);
+                                          } else {
+                                            const index = newValue.indexOf(val);
+                                            if (index > -1) newValue.splice(index, 1);
+                                          }
+                                          input.onChange(newValue);
+                                        }
+                                      }
+                                    ),
+                                    isChecked && jsx(
+                                      "span",
+                                      {
+                                        style: {
+                                          position: "absolute",
+                                          width: "4px",
+                                          height: "8px",
+                                          border: "solid white",
+                                          borderWidth: "0 2px 2px 0",
+                                          transform: "rotate(45deg) translate(0px, -1px)",
+                                          display: "block",
+                                          zIndex: 1
+                                        }
+                                      }
+                                    )
+                                  ]
+                                }
+                              ),
+                              lbl
+                            ]
+                          },
+                          val
+                        );
+                      })
+                    }
+                  )
                 ] });
               }
             },
-            options: ["Tech & Lifestyle", "Office Stationery", "Diary", "Drinkware", "Eco-Friendly", "Leather Goods", "Keychains", "Gift Sets"]
+            options: [
+              "Tech & Lifestyle",
+              "Office Stationery",
+              "Diary",
+              "Drinkware",
+              "Eco-Friendly",
+              "Leather Goods",
+              "Keychains",
+              "Gift Sets"
+            ]
           },
           { type: "image", name: "image", label: "Display Image" },
           { type: "number", name: "price", label: "Base Price (\u20B9)" },
-          { type: "number", name: "moq", label: "Minimum Order Quantity (MOQ)" },
-          { type: "rich-text", name: "body", label: "Product Description", isBody: true },
+          {
+            type: "number",
+            name: "moq",
+            label: "Minimum Order Quantity (MOQ)"
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Product Description",
+            isBody: true
+          },
           // 💡 COLOR CHECKLIST: Declared only once at the bottom
           {
             type: "string",
@@ -118,56 +240,120 @@ var config_default = defineConfig({
               component: ({ input, field }) => {
                 const options = field.options || [];
                 return jsxs("div", { style: { marginBottom: "20px" }, children: [
-                  jsx("label", { style: { display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px", color: "#374151" }, children: field.label }),
-                  jsx("div", { style: { display: "flex", flexWrap: "wrap", gap: "16px", background: "#f9fafb", padding: "12px", borderRadius: "6px", border: "1px solid #e5e7eb" }, children: options.map((option) => {
-                    const isChecked = (input.value || []).includes(option.value);
-                    return jsxs("label", { style: { display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontSize: "14px", color: "#1f2937", fontWeight: "500", userSelect: "none" }, children: [
-                      jsxs("span", { style: { display: "flex", alignItems: "center", justifyContent: "center", position: "relative", width: "18px", height: "18px" }, children: [
-                        jsx(
-                          "input",
+                  jsx(
+                    "label",
+                    {
+                      style: {
+                        display: "block",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        marginBottom: "8px",
+                        color: "#374151"
+                      },
+                      children: field.label
+                    }
+                  ),
+                  jsx(
+                    "div",
+                    {
+                      style: {
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "16px",
+                        background: "#f9fafb",
+                        padding: "12px",
+                        borderRadius: "6px",
+                        border: "1px solid #e5e7eb"
+                      },
+                      children: options.map((option) => {
+                        const isChecked = (input.value || []).includes(
+                          option.value
+                        );
+                        return jsxs(
+                          "label",
                           {
-                            type: "checkbox",
-                            value: option.value,
-                            checked: isChecked,
                             style: {
-                              appearance: "none",
-                              WebkitAppearance: "none",
-                              width: "18px",
-                              height: "18px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
                               cursor: "pointer",
-                              borderRadius: "4px",
-                              backgroundColor: isChecked ? "#4338ca" : "#ffffff",
-                              border: isChecked ? "2px solid #4338ca" : "2px solid #d1d5db",
-                              transition: "all 0.1s ease",
-                              margin: 0,
-                              display: "block"
+                              fontSize: "14px",
+                              color: "#1f2937",
+                              fontWeight: "500",
+                              userSelect: "none"
                             },
-                            onChange: (e) => {
-                              const newValue = [...input.value || []];
-                              if (e.target.checked) {
-                                newValue.push(option.value);
-                              } else {
-                                const index = newValue.indexOf(option.value);
-                                if (index > -1) newValue.splice(index, 1);
-                              }
-                              input.onChange(newValue);
-                            }
-                          }
-                        ),
-                        isChecked && jsx("span", { style: {
-                          position: "absolute",
-                          width: "4px",
-                          height: "8px",
-                          border: "solid white",
-                          borderWidth: "0 2px 2px 0",
-                          transform: "rotate(45deg) translate(0px, -1px)",
-                          display: "block",
-                          zIndex: 1
-                        } })
-                      ] }),
-                      option.label
-                    ] }, option.value);
-                  }) })
+                            children: [
+                              jsxs(
+                                "span",
+                                {
+                                  style: {
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    position: "relative",
+                                    width: "18px",
+                                    height: "18px"
+                                  },
+                                  children: [
+                                    jsx(
+                                      "input",
+                                      {
+                                        type: "checkbox",
+                                        value: option.value,
+                                        checked: isChecked,
+                                        style: {
+                                          appearance: "none",
+                                          WebkitAppearance: "none",
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                          borderRadius: "4px",
+                                          backgroundColor: isChecked ? "#4338ca" : "#ffffff",
+                                          border: isChecked ? "2px solid #4338ca" : "2px solid #d1d5db",
+                                          transition: "all 0.1s ease",
+                                          margin: 0,
+                                          display: "block"
+                                        },
+                                        onChange: (e) => {
+                                          const newValue = [...input.value || []];
+                                          if (e.target.checked) {
+                                            newValue.push(option.value);
+                                          } else {
+                                            const index = newValue.indexOf(
+                                              option.value
+                                            );
+                                            if (index > -1) newValue.splice(index, 1);
+                                          }
+                                          input.onChange(newValue);
+                                        }
+                                      }
+                                    ),
+                                    isChecked && jsx(
+                                      "span",
+                                      {
+                                        style: {
+                                          position: "absolute",
+                                          width: "4px",
+                                          height: "8px",
+                                          border: "solid white",
+                                          borderWidth: "0 2px 2px 0",
+                                          transform: "rotate(45deg) translate(0px, -1px)",
+                                          display: "block",
+                                          zIndex: 1
+                                        }
+                                      }
+                                    )
+                                  ]
+                                }
+                              ),
+                              option.label
+                            ]
+                          },
+                          option.value
+                        );
+                      })
+                    }
+                  )
                 ] });
               }
             },

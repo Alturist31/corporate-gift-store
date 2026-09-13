@@ -1,6 +1,8 @@
 ---
+isFeatured: true
 title: Premium PU Leather Diary
-category: Gift Sets
+category:
+  - Gift Sets
 image: /uploads/H3139.jpg
 price: 360
 moq: 20
