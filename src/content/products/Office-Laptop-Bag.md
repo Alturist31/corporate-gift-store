@@ -1,6 +1,8 @@
 ---
+isFeatured: true
 title: Office Laptop Bag
-category: Tech & Lifestyle
+category:
+  - Tech & Lifestyle
 image: /uploads/H1550.png
 price: 780
 moq: 30
