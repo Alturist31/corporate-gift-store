@@ -89,6 +89,7 @@ union DocumentNode = Product | Folder
 
 type Product implements Node & Document {
   productTogglesGroup: String
+  isActive: Boolean
   isOutOfStock: Boolean
   isFeatured: Boolean
   title: String!
@@ -140,6 +141,7 @@ input RichTextFilter {
 
 input ProductFilter {
   productTogglesGroup: StringFilter
+  isActive: BooleanFilter
   isOutOfStock: BooleanFilter
   isFeatured: BooleanFilter
   title: StringFilter
@@ -183,6 +185,7 @@ input DocumentMutation {
 
 input ProductMutation {
   productTogglesGroup: String
+  isActive: Boolean
   isOutOfStock: Boolean
   isFeatured: Boolean
   title: String

@@ -9,6 +9,7 @@ export const ProductPartsFragmentDoc = gql`
     fragment ProductParts on Product {
   __typename
   productTogglesGroup
+  isActive
   isOutOfStock
   isFeatured
   title

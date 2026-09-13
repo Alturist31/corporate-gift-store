@@ -121,11 +121,14 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       </div>
 
       <div class="count-badge" id="catalogCounter">
-        Showing <span class="count-number-box">{localProducts.length}</span> Options
+        Showing <span class="count-number-box">{localProducts.filter(p => p.data?.isActive !== false).length}</span> Options
       </div>
 
       <div class="catalog-grid" id="catalogGrid">
         {localProducts.map((product) => {
+         if (product.data?.isActive !== undefined && product.data?.isActive === false) {
+            return null;
+          }
           let pCats = [];
           const rawCatField = product.data?.category || [];
           if (Array.isArray(rawCatField)) {
@@ -185,7 +188,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
       let searchQuery = "";
 
       function filterCatalog() {
-        const lowerCategory = activeCategory.toLowerCase();
+        /*const lowerCategory = activeCategory.toLowerCase();
         let visibleCount = 0;
         
         cards.forEach(card => {
@@ -215,7 +218,49 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
           resetFiltersBtn.style.display = 'block';
         } else {
           resetFiltersBtn.style.display = 'none';
+        }*/
+      
+     const activeCategory = document.querySelector('.filter-btn.active')?.getAttribute('data-target') || 'All';
+        const searchQuery = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          // 🚀 FIX: Correctly parses the plural 'data-categories' array layout tag wrapper
+          const cardCategoriesRaw = card.getAttribute('data-categories') || '[]';
+          let cardCategories = [];
+          try {
+            cardCategories = JSON.parse(cardCategoriesRaw);
+          } catch(e) {
+            cardCategories = [cardCategoriesRaw.replace(/[\[\]\"']/g, '').toLowerCase()];
+          }
+          
+          const matchesCategory = activeCategory === 'All' || cardCategories.map(c => c.toLowerCase()).includes(activeCategory.toLowerCase());
+          
+          const cardTitle = (card.getAttribute('data-title') || '').toLowerCase();
+          const cardDesc = (card.getAttribute('data-desc') || '').toLowerCase();
+          const matchesSearch = cardTitle.includes(searchQuery) || cardDesc.includes(searchQuery);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Updates your count number box live
+        const counterBox = document.querySelector('#catalogCounter .count-number-box');
+        if (counterBox) {
+          counterBox.textContent = visibleCount;
         }
+
+        // 🚀 FIX: Toggles Clear Filters button visibility if anything is altered or filtered away
+        const isFiltered = activeCategory !== 'All' || searchQuery !== '' || priceSorter.value !== 'default';
+        if (resetFiltersBtn) {
+          resetFiltersBtn.style.display = isFiltered ? 'inline-block' : 'none';
+        }
+
+
       }
 
       function sortCatalog() {
@@ -252,7 +297,7 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
         filterCatalog();
       });
-      priceSorter?.addEventListener("change", () => { sortCatalog(); });
+      priceSorter?.addEventListener("change", () => { sortCatalog(); filterCatalog();});
     </script>
   </body>
 </html>

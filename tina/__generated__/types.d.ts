@@ -167,6 +167,7 @@ export type DocumentNode = Product | Folder;
 export type Product = Node & Document & {
   __typename?: 'Product';
   productTogglesGroup?: Maybe<Scalars['String']['output']>;
+  isActive?: Maybe<Scalars['Boolean']['output']>;
   isOutOfStock?: Maybe<Scalars['Boolean']['output']>;
   isFeatured?: Maybe<Scalars['Boolean']['output']>;
   title: Scalars['String']['output'];
@@ -218,6 +219,7 @@ export type RichTextFilter = {
 
 export type ProductFilter = {
   productTogglesGroup?: InputMaybe<StringFilter>;
+  isActive?: InputMaybe<BooleanFilter>;
   isOutOfStock?: InputMaybe<BooleanFilter>;
   isFeatured?: InputMaybe<BooleanFilter>;
   title?: InputMaybe<StringFilter>;
@@ -309,6 +311,7 @@ export type DocumentMutation = {
 
 export type ProductMutation = {
   productTogglesGroup?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
   isOutOfStock?: InputMaybe<Scalars['Boolean']['input']>;
   isFeatured?: InputMaybe<Scalars['Boolean']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -357,6 +360,7 @@ export type RichTextFilter = {
 
 export type ProductFilter = {
   productTogglesGroup?: StringFilter | null | undefined;
+  isActive?: BooleanFilter | null | undefined;
   isOutOfStock?: BooleanFilter | null | undefined;
   isFeatured?: BooleanFilter | null | undefined;
   title?: StringFilter | null | undefined;
@@ -368,14 +372,14 @@ export type ProductFilter = {
   colors?: StringFilter | null | undefined;
 };
 
-export type ProductPartsFragment = { __typename: 'Product', productTogglesGroup: string | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
+export type ProductPartsFragment = { __typename: 'Product', productTogglesGroup: string | null, isActive: boolean | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null };
 
 export type ProductQueryVariables = Exact<{
   relativePath: string;
 }>;
 
 
-export type ProductQuery = { product: { __typename: 'Product', id: string, productTogglesGroup: string | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ProductQuery = { product: { __typename: 'Product', id: string, productTogglesGroup: string | null, isActive: boolean | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type ProductConnectionQueryVariables = Exact<{
   before?: string | null | undefined;
@@ -387,12 +391,13 @@ export type ProductConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, productTogglesGroup: string | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ProductConnectionQuery = { productConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Product', id: string, productTogglesGroup: string | null, isActive: boolean | null, isOutOfStock: boolean | null, isFeatured: boolean | null, title: string, category: Array<string | null> | null, image: string | null, price: number | null, moq: number | null, body: any, colors: Array<string | null> | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const ProductPartsFragmentDoc = gql`
     fragment ProductParts on Product {
   __typename
   productTogglesGroup
+  isActive
   isOutOfStock
   isFeatured
   title

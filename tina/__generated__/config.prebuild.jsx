@@ -81,16 +81,30 @@ var config_default = defineConfig({
             ui: {
               component: ({ form }) => {
                 const formValues = form.getState().values || {};
+                const isActiveChecked = formValues.isActive !== void 0 ? formValues.isActive : true;
                 const isStockChecked = formValues.isOutOfStock || false;
                 const isFeatChecked = formValues.isFeatured || false;
-                return jsxs("div", { style: { display: "flex", gap: "32px", background: "#f9fafb", padding: "16px", borderRadius: "8px", border: "1px solid #e5e7eb", marginBottom: "20px" }, children: [
+                return jsxs("div", { style: { display: "flex", gap: "28px", flexWrap: "wrap", background: "#f9fafb", padding: "16px", borderRadius: "8px", border: "1px solid #e5e7eb", marginBottom: "20px" }, children: [
+                  jsxs("label", { style: { display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: "600", color: "#374151", cursor: "pointer", userSelect: "none" }, children: [
+                    jsx(
+                      "input",
+                      {
+                        type: "checkbox",
+                        checked: isActiveChecked,
+                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isActiveChecked ? "#E31E24" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
+                        onChange: (e) => form.change("isActive", e.target.checked)
+                      }
+                    ),
+                    jsx("span", { style: { position: "absolute", width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "white", transform: isActiveChecked ? "translateX(18px)" : "translateX(2px)", transition: "all 0.2s ease", pointerEvents: "none" } }),
+                    "Product Listing (Active)"
+                  ] }),
                   jsxs("label", { style: { display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: "600", color: "#374151", cursor: "pointer", userSelect: "none" }, children: [
                     jsx(
                       "input",
                       {
                         type: "checkbox",
                         checked: isStockChecked,
-                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isStockChecked ? "#0A3D33" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
+                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isStockChecked ? "#E31E24" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
                         onChange: (e) => form.change("isOutOfStock", e.target.checked)
                       }
                     ),
@@ -103,7 +117,7 @@ var config_default = defineConfig({
                       {
                         type: "checkbox",
                         checked: isFeatChecked,
-                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isFeatChecked ? "#0A3D33" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
+                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isFeatChecked ? "#E31E24" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
                         onChange: (e) => form.change("isFeatured", e.target.checked)
                       }
                     ),
@@ -114,7 +128,8 @@ var config_default = defineConfig({
               }
             }
           },
-          /* Backing trackers */
+          /* Hidden backing properties engine */
+          { type: "boolean", name: "isActive", ui: { component: () => null } },
           { type: "boolean", name: "isOutOfStock", ui: { component: () => null } },
           { type: "boolean", name: "isFeatured", ui: { component: () => null } },
           {
