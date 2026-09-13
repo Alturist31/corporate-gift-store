@@ -1,6 +1,7 @@
 ---
 isActive: true
-isOutOfStock: false
+isOutOfStock: true
+isFeatured: true
 title: 2 in 1 Gift Set
 category:
   - Gift Sets
