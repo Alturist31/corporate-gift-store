@@ -88,6 +88,8 @@ type Collection {
 union DocumentNode = Product | Folder
 
 type Product implements Node & Document {
+  productTogglesGroup: String
+  isOutOfStock: Boolean
   isFeatured: Boolean
   title: String!
   category: [String]
@@ -101,16 +103,16 @@ type Product implements Node & Document {
   _values: JSON!
 }
 
-input BooleanFilter {
-  eq: Boolean
-  exists: Boolean
-}
-
 input StringFilter {
   startsWith: String
   eq: String
   exists: Boolean
   in: [String]
+}
+
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
 }
 
 input ImageFilter {
@@ -137,6 +139,8 @@ input RichTextFilter {
 }
 
 input ProductFilter {
+  productTogglesGroup: StringFilter
+  isOutOfStock: BooleanFilter
   isFeatured: BooleanFilter
   title: StringFilter
   category: StringFilter
@@ -178,6 +182,8 @@ input DocumentMutation {
 }
 
 input ProductMutation {
+  productTogglesGroup: String
+  isOutOfStock: Boolean
   isFeatured: Boolean
   title: String
   category: [String]

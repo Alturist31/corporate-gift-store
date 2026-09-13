@@ -74,7 +74,49 @@ var config_default = defineConfig({
         path: "src/content/products",
         format: "md",
         fields: [
-          { type: "boolean", name: "isFeatured", label: "Pin to Top (Feature Product Visibility)" },
+          {
+            type: "string",
+            name: "productTogglesGroup",
+            label: "Product Controls Matrix Layout",
+            ui: {
+              component: ({ form }) => {
+                const formValues = form.getState().values || {};
+                const isStockChecked = formValues.isOutOfStock || false;
+                const isFeatChecked = formValues.isFeatured || false;
+                return jsxs("div", { style: { display: "flex", gap: "32px", background: "#f9fafb", padding: "16px", borderRadius: "8px", border: "1px solid #e5e7eb", marginBottom: "20px" }, children: [
+                  jsxs("label", { style: { display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: "600", color: "#374151", cursor: "pointer", userSelect: "none" }, children: [
+                    jsx(
+                      "input",
+                      {
+                        type: "checkbox",
+                        checked: isStockChecked,
+                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isStockChecked ? "#0A3D33" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
+                        onChange: (e) => form.change("isOutOfStock", e.target.checked)
+                      }
+                    ),
+                    jsx("span", { style: { position: "absolute", width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "white", transform: isStockChecked ? "translateX(18px)" : "translateX(2px)", transition: "all 0.2s ease", pointerEvents: "none" } }),
+                    "Out of Stock"
+                  ] }),
+                  jsxs("label", { style: { display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: "600", color: "#374151", cursor: "pointer", userSelect: "none" }, children: [
+                    jsx(
+                      "input",
+                      {
+                        type: "checkbox",
+                        checked: isFeatChecked,
+                        style: { appearance: "none", WebkitAppearance: "none", width: "36px", height: "20px", borderRadius: "10px", backgroundColor: isFeatChecked ? "#0A3D33" : "#d1d5db", position: "relative", cursor: "pointer", transition: "all 0.2s ease", outline: "none", margin: 0 },
+                        onChange: (e) => form.change("isFeatured", e.target.checked)
+                      }
+                    ),
+                    jsx("span", { style: { position: "absolute", width: "16px", height: "16px", borderRadius: "50%", backgroundColor: "white", transform: isFeatChecked ? "translateX(18px)" : "translateX(2px)", transition: "all 0.2s ease", pointerEvents: "none" } }),
+                    "Featured Product"
+                  ] })
+                ] });
+              }
+            }
+          },
+          /* Backing trackers */
+          { type: "boolean", name: "isOutOfStock", ui: { component: () => null } },
+          { type: "boolean", name: "isFeatured", ui: { component: () => null } },
           {
             type: "string",
             name: "title",
@@ -230,7 +272,6 @@ var config_default = defineConfig({
             label: "Product Description",
             isBody: true
           },
-          // 💡 COLOR CHECKLIST: Declared only once at the bottom
           {
             type: "string",
             name: "colors",

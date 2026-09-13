@@ -1,4 +1,6 @@
 ---
+isOutOfStock: false
+isFeatured: false
 title: Planner with PowerBank
 category:
   - Tech & Lifestyle
