@@ -1,5 +1,5 @@
 ---
-isFeatured: true
+isFeatured: false
 title: Premium PU Leather Diary
 category:
   - Gift Sets
