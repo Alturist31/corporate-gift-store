@@ -227,19 +227,9 @@ const uniqueCategories = ["All", ...new Set(rawCategories)];
         filterCatalog();
       }
 
+
       resetFiltersBtn?.addEventListener('click', () => {
-        searchInput.value = '';
-        searchQuery = '';
-        priceSorter.value = 'default';
-        activeCategory = 'All';
-        document.querySelector('.filter-btn.active')?.classList.remove('active');
-        
-        // 🚀 THE ARRAY ELEMENT FIX: Targets the explicit index array node zero safely to wipe fields
-        if (buttons && buttons.length > 0) {
-          buttons[0].classList.add('active');
-        }
-        
-        sortCatalog();
+      	window.location.reload(); 
       });
 
       buttons.forEach(btn => {
