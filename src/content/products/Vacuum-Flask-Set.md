@@ -1,6 +1,6 @@
 ---
-isOutOfStock: true
-isFeatured: true
+isOutOfStock: false
+isFeatured: false
 title: Vacuum Flask Set
 category:
   - Gift Sets
