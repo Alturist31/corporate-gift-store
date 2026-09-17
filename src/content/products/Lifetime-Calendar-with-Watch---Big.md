@@ -4,6 +4,6 @@ category:
   - Office Stationery
 image: /uploads/SteelLifeTimeCalendarwithWatch.png
 price: 270
-moq: 22
+moq: 25
 ---
 
